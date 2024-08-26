@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Usuários Cadastrados</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Lista de Usuários</h1>
+        <div id="container" class="container mt-5">
+            <div id="botoes" class="button-group mb-4 text-center">
+                <button class="btn btn-primary mr-1" onclick="mostrarFormularioCadastro()">Cadastrar</button>
+                <button class="btn btn-edit mr-2" onclick="mostrarFormularioEdicao()">Editar</button>
+                <button class="btn btn-danger" onclick="mostrarFormularioDeletar()">Deletar</button>
+            </div>
+            <div id="tabela" class="button-group mb-4 text-center">
+                <table class="table table-bordered table-striped">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>E-mail</th>
+                            <th>Senha</th>
+                            <th>Data de Cadastro</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for usuario in usuarios %}
+                        <tr>
+                            <td>{{ usuario.id }}</td>
+                            <td>{{ usuario.nome }}</td>
+                            <td>{{ usuario.email }}</td>
+                            <td>{{ usuario.senha | mask_password }}</td>
+                            <td>{{ usuario.data_cadastro }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Formulário de Edição -->
+        <div id="form-container" style="display: none;" class="mt-4">
+            <h2>Editar Usuário</h2>
+            <form id="edit-form" method="POST">
+                <input type="hidden" id="edit-id" name="id">
+                <div class="form-group">
+                    <label for="edit-nome">Nome</label>
+                    <input type="text" id="edit-nome" name="nome" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="edit-email">E-mail</label>
+                    <input type="email" id="edit-email" name="email" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="edit-senha">Senha</label>
+                    <input type="password" id="edit-senha" name="senha" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="edit-data-cadastro">Data de Cadastro</label>
+                    <input type="date" id="edit-data-cadastro" name="data_cadastro" class="form-control">
+                </div>
+                <button type="submit" class="btn btn-primary">Salvar</button>
+                <button type="button" class="btn btn-secondary" onclick="cancelarEdicao()">Cancelar</button>
+            </form>
+        </div>
+
+        <!-- Formulário de Cadastro -->
+        <div id="cadastro-container" style="display: none;" class="mt-4">
+            <h2>Cadastrar Usuário</h2>
+            <form id="cadastro-form">
+                <div class="form-group">
+                    <label for="cadastro-nome">Nome</label>
+                    <input type="text" id="cadastro-nome" name="nome" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="cadastro-email">E-mail</label>
+                    <input type="email" id="cadastro-email" name="email" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="cadastro-senha">Senha</label>
+                    <input type="password" id="cadastro-senha" name="senha" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="cadastro-data-cadastro">Data de Cadastro</label>
+                    <input type="date" id="cadastro-data-cadastro" name="data_cadastro" class="form-control">
+                </div>
+                <button type="submit" class="btn btn-primary">Cadastrar</button>
+                <button type="button" class="btn btn-secondary" onclick="cancelarCadastro()">Cancelar</button>
+            </form>
+        </div>
+        <!-- Formulário para inserir ID do usuário a ser editado -->
+        <div id="edit-id-container" style="display: none;" class="mt-4">
+            <h2>Inserir ID do Usuário</h2>
+            <form id="edit-id-form">
+                <div class="form-group">
+                    <label for="edit-id-input">ID do Usuário</label>
+                    <input type="text" id="edit-id-input" name="id" class="form-control" required>
+                </div>
+                <button type="button" class="btn btn-primary" onclick="editarUsuario()">Editar</button>
+                <button type="button" class="btn btn-secondary" onclick="cancelarEdicao()">Cancelar</button>
+            </form>
+        </div>
+
+        <!-- Formulário para inserir ID do usuário a ser deletado -->
+        <div id="delete-id-container" style="display: none;" class="mt-4">
+            <h2>Inserir ID do Usuário</h2>
+            <form id="delete-id-form">
+                <div class="form-group">
+                    <label for="delete-id-input">ID do Usuário</label>
+                    <input type="text" id="delete-id-input" name="id" class="form-control" required>
+                </div>
+                <button type="button" class="btn btn-danger" onclick="deletarUsuario()">Deletar</button>
+                <button type="button" class="btn btn-secondary" onclick="cancelarDeletar()">Cancelar</button>
+            </form>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script src="{{ url_for('static', filename='cadastrar.js') }}"></script>
+</body>
+</html>
